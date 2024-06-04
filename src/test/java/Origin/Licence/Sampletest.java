@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -19,8 +20,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Sampletest {
 
@@ -34,7 +33,11 @@ public class Sampletest {
     public void setUp() {
         // Set up WebDriver
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("headless");
+
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
 
         // Login if not already logged in
@@ -54,9 +57,9 @@ public class Sampletest {
     }
 
     @Test(priority = 1)
-    public void click_on_Automation_dropdown_option() {
+    public void click_on_Licence_Management_dropdown_option() {
         try {
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(10000));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
             Select mainCustomerDropDown = new Select(driver.findElement(By.id("selectCustomer")));
             mainCustomerDropDown.selectByVisibleText("Biocon");
         } catch (Exception e) {
@@ -67,7 +70,7 @@ public class Sampletest {
     @Test(priority = 2)
     public void clickonadd_button() {
         try {
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(10000));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
             WebElement automationMenuOption = driver.findElement(By.xpath("//aside/div[2]/nav/a[9]"));
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].click()", automationMenuOption);
